@@ -1,0 +1,17 @@
+{
+  "name": "get-ng-page",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "testScript": "yarn start --url https://rawgit.com/start-angular/ani-angular-2/master/dist/prod/index.html#/login"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "js-beautify": "^1.9.1",
+    "minimist": "^1.2.0",
+    "phantomjs2": "^2.2.0"
+  }
+}
