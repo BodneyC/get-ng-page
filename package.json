@@ -12,6 +12,9 @@
   "dependencies": {
     "js-beautify": "^1.9.1",
     "minimist": "^1.2.0",
-    "phantomjs2": "^2.2.0"
+    "phantom": "^6.2.0",
+    "utf8": "^3.0.0"
+  },
+  "devDependencies": {
   }
 }

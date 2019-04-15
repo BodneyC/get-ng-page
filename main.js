@@ -1,8 +1,7 @@
 const jsb = require('js-beautify')
 const fs = require('fs')
-const phantomBin = require('phantomjs2').path
-const cp = require('child_process')
-
+const phantom = require('phantom');
+ 
 const getFilename = (url) => {
   url = url.replace(/\//g, '.')
   if(!/.html$/.test(url))
@@ -19,21 +18,35 @@ const beautifyPage = (htmlContent) => {
   return jsb.html(htmlContent, options)
 }
 
+const save_page = async (url, proxy) => {
+  let content
+  try {
+    const instance = await phantom.create([ 
+      `--proxy=${proxy}`
+    ]);
+    const page = await instance.createPage();
+    await page.on('onResourceRequested', () => { });
+   
+    await page.open(url);
+    content = await page.property('content');
+   
+    await instance.exit();
+  } catch(e) {
+    return e
+  }
+  return content
+}
+
 const processUrl = (url, gngpArgv) => {
   const filename = `${gngpArgv.outdir}/${getFilename(url)}`
-  var phantomArgs = [
-    `--proxy=${gngpArgv.proxy}`,
-    `${__dirname}/scripts/save_page.js`,
-    url
-  ]
-  cp.execFile(phantomBin, phantomArgs, (err, stdout, _) => {
-    if(err){
-      console.log(`Failure: URL ${url}\n${err}`)
+  save_page(url, gngpArgv.proxy).then((res) => {
+    if(res instanceof Error) {
+      console.log(`Phantom failure: URL ${url}\n${res}`)
       return
     }
-    fs.writeFile(filename, beautifyPage(stdout), (err) => {
+    fs.writeFile(filename, beautifyPage(res), (err) => {
       if(err) {
-        console.log(`Failure: URL ${url}\n${err}`)
+        console.log(`Write failure: URL ${url}\n${err}`)
         return
       }
       console.log(`Success: URL ${url}\n\tFile: ${filename}`)
@@ -62,7 +75,7 @@ const getNgPage = (gngpArgv) => {
       '\n\t  [\'proxy\':  \'<url:port>\'],' +
       '\n\t  [\'outdir\': \'./output_dir\'],' +
       '\n\t  \'url\':     \'<url[,...]>\',' +
-      '\n\t  \'proxy\':   \'<url list file>\',' +
+      '\n\t  \'urllist\':   \'<url list file>\',' +
       '\n\t})')
     return
   }
