@@ -16,3 +16,7 @@ yarn install
 `$ yarn start [--outdir <output directory>] [--proxy <url:port>] --url <url> --urllist <file of urls>'`
 
 E.g.: `$ yarn start --url <url>`
+
+## Additional Notes
+
+Proxy, provided with the `--proxy` flag, must contain both protocol and port.

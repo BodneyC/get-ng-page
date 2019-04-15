@@ -22,9 +22,9 @@ const beautifyPage = (htmlContent) => {
 const processUrl = (url, gngpArgv) => {
   const filename = `${gngpArgv.outdir}/${getFilename(url)}`
   var phantomArgs = [
+    `--proxy=${gngpArgv.proxy}`,
     `${__dirname}/scripts/save_page.js`,
-    url,
-    `--proxy=${gngpArgv.proxy}`
+    url
   ]
   cp.execFile(phantomBin, phantomArgs, (err, stdout, _) => {
     if(err){
