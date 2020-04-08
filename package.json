@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "js-beautify": "^1.9.1",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.3",
     "phantom": "^6.2.0",
     "utf8": "^3.0.0"
   },
